@@ -1,0 +1,7 @@
+<div class="board-row">
+    <app-board-unit 
+        *ngFor="let letter of word; index as i" [index]="i" 
+        [rowIndex]="index"
+        [correctWord]="correctWord">
+    </app-board-unit>
+</div>

@@ -3,6 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { GameComponent } from './game/game.component';
+import { GameManagerService } from './services/game-manager.service';
+import { WordGeneratorService } from './services/word-generator.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ThemeService } from './services/theme-service.service';
+
 
 @NgModule({
   declarations: [
@@ -10,9 +17,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HomeComponent,
+    GameComponent,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    GameManagerService, WordGeneratorService, ThemeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

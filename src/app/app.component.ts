@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './services/theme-service.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'wordle';
+    title = 'wordle';
+    mode = 'light';
+
+    constructor(private themeService: ThemeService) {
+      this.themeService.modeChange.subscribe(value => {
+        this.mode = value;
+      })
+    }
+
+    toggleMode() {
+      this.themeService.toggleMode();
+    }
 }

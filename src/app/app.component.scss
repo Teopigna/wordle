@@ -1,0 +1,13 @@
+.img-moon {
+    width: 4vw;
+    margin-right: 2vw;
+    margin-top: 2vh;
+    cursor: pointer;
+  }
+  
+  .moon-container {
+    display: flex;
+    width: 100vw;
+    flex-direction: row-reverse;
+    position:absolute;
+  }

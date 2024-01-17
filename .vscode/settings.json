@@ -1,0 +1,11 @@
+{
+    "nuxt.isNuxtApp": false,
+    "angular-schematics.schematicsDefaultOptions": {
+        "angular-*": {
+            "externalTemplate": true
+        },
+        "angular-component": {
+            "ngOnInit": true
+        }
+    }
+}

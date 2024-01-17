@@ -1,0 +1,65 @@
+<!-- <div class="moon-container">
+    <img 
+        [src] = "mode === 'light' ? './assets/images/moon-light-mode.svg' : './assets/images/moon-dark-mode.svg'" 
+        class="img-moon"
+        (click)="toggleMode()"
+    />
+</div> -->
+
+<div class="rules-container" *ngIf="rules">
+    <div class="rules-panel" [ngClass]="mode === 'light' ? 'panel-light-mode' : 'panel-dark-mode'">
+        <div class="icon-container" [ngClass]="mode === 'light' ? 'icon-container-light' : 'icon-container-dark'">
+            <img 
+                [src] = "mode === 'light' ? './assets/images/cross-x-light.svg' : './assets/images/cross-x-dark.svg'" 
+                class="img-x"
+                (click)="closeRules()"
+            />
+        </div>
+
+        <div class="txt-rules">
+            <h1>Regole di gioco</h1>
+            <h5>Hai 6 tentativi per indovinare la parola</h5>
+            <ul>
+                <li><p>Ogni tentativo deve essere una parola da 5 lettere valida</p></li>
+                <li><p>Ogni tentativo deve essere una parola da 5 lettere valida</p></li>
+            </ul>
+            <h6>Esempi</h6>
+            <h1>W E A R Y</h1>
+            <p>W è presente nella parola e nel punto corretto.</p>
+            <h1>P I L L S</h1>
+            <p>I è presente nella parola ma non è nel punto corretto.</p>
+            <h1>V A G U E</h1>
+            <p>U non è presente nella parola.</p>
+        </div>
+        
+    </div>
+</div>
+
+
+<div class="main-container" [ngClass]="mode === 'light' ? 'light-mode' : 'dark-mode'">
+    <img 
+        [src] = "mode === 'light' ? './assets/images/grid-3x3-light.svg' : './assets/images/grid-3x3-dark.svg'" 
+        class="img-logo"
+    />
+    <h1 class="txt-title">Wordle</h1>
+    <div class="txt-container">
+        <h2 class="txt-description"> 
+            Hai 6 possibilità per indovinare una parola di 5 lettere
+        </h2>
+    </div>
+    <div class="button-container">
+        <a 
+            class="btn btn-default btn-large" 
+            [ngClass]="mode === 'light' ? 'btn-light-mode' : 'btn-dark-mode'"
+            (click)="openRules()">
+            Regole
+        </a>
+        <a 
+            class="btn btn-default btn-large" 
+            [ngClass]="mode === 'light' ? 'btn-light-mode' : 'btn-dark-mode'"
+            (click)="startGame()">
+            Gioca
+        </a>
+    </div>
+</div>
+

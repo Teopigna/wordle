@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.board {
+  margin: auto;
+  width: 20vw;
+  height: 23vw;
+  text-align: center;
+  /* border: 2px solid black; */
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5vh 5vh 5vh 5vh 5vh 5vh 5vh;
+  row-gap: 1vw;
+}

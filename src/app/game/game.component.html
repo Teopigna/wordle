@@ -1,0 +1,32 @@
+<div class="result-container" *ngIf="result">
+    <div class="result-panel" [ngClass]="mode === 'light' ? 'panel-light-mode' : 'panel-dark-mode'">
+        <h1 class="result-title">You {{result}}</h1>
+        <h5>Statistiche </h5>
+        <p>statistiche statistiche statistiche statistiche statistiche
+            statistiche statistiche statistiche statistiche statistiche
+            statistiche statistiche statistiche statistiche statistiche
+            statistiche statistiche statistiche statistiche statistiche
+        </p>
+        <div class="button-container">
+            <a 
+                class="btn btn-default btn-large" 
+                [ngClass]="mode === 'light' ? 'btn-light-mode' : 'btn-dark-mode'"
+                (click)="exit()">
+                ESCI
+            </a>
+            <a 
+                class="btn btn-default btn-large" 
+                [ngClass]="mode === 'light' ? 'btn-light-mode' : 'btn-dark-mode'"
+                (click)="restartGame()">
+                RIGIOCA
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="main-container" [ngClass]="mode === 'light' ? ['light-mode', 'light-container'] : ['dark-mode', 'dark-container']">
+    <app-game-board *ngIf="correctWord" [correctWord]="correctWord"></app-game-board>
+</div>
+<div  class="keyboard-container" [ngClass]="mode === 'light' ? 'light-mode' : 'dark-mode'" >
+    <div class="simple-keyboard"></div>
+</div>
