@@ -12,7 +12,7 @@ import { ThemeService } from '../services/theme-service.service';
   imports: [
     CommonModule,
     RouterOutlet,
-    GameComponent,
+    GameComponent
   ],
   templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css'],
@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.mode = this.themeService.getMode();
     this.themeService.modeChange.subscribe(value => {
       this.mode = value;
       console.info(this.mode)

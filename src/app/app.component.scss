@@ -1,5 +1,5 @@
 .img-moon {
-    width: 4vw;
+    width: 3vw;
     margin-right: 2vw;
     margin-top: 2vh;
     cursor: pointer;
@@ -10,4 +10,5 @@
     width: 100vw;
     flex-direction: row-reverse;
     position:absolute;
+    z-index: 1;
   }

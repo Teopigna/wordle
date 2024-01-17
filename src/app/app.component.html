@@ -4,5 +4,9 @@
         class="img-moon"
         (click)="toggleMode()"
     />
+    <img 
+        [src] = "mode === 'light' ? './assets/images/stats-light.svg' : './assets/images/stats-dark.svg'" 
+        class="img-moon"
+    />
 </div>
 <router-outlet></router-outlet>

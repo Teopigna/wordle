@@ -17,6 +17,10 @@ export class GameManagerService {
   guessSent: Subject<string> = new Subject<string>();
   rowChange: Subject<number> = new Subject<number>();
   resultChange: Subject<string> = new Subject<string>();
+  // Subjects for keyboard coloring used letters
+  correctLetter: Subject<string> = new Subject<string>();
+  containedLetter: Subject<string> = new Subject<string>();
+  normalLetter: Subject<string> = new Subject<string>();
 
   constructor(private wordGeneratorService: WordGeneratorService)  {
     this.userInputChange.subscribe((value) => {
@@ -66,9 +70,7 @@ export class GameManagerService {
       console.info('Word is not recognized');
       return;
     }
-    console.info('is: '+ guess.toUpperCase()+' = '+this.correctWord)
     if(guess.toUpperCase() === this.correctWord) {
-      console.info('game-won');
       this.currentRow = -1;
       this.rowChange.next(this.currentRow);
       this.winGame();
@@ -83,11 +85,26 @@ export class GameManagerService {
     this.increaseCurrentRow();
   }
 
+  sendCorrectLetter(letter: string) {
+    console.info('correct: '+letter);
+    this.correctLetter.next(letter);
+  }
+
+  sendContainedLetter(letter: string) {
+    console.info('contained: '+letter);
+    this.containedLetter.next(letter);
+  }
+
+  sendNormalLetter(letter: string) {
+    console.info('normal: '+letter);
+    this.normalLetter.next(letter);
+  }
+
   winGame() {
-    this.resultChange.next('win');
+    this.resultChange.next('vinto');
   }
 
   looseGame() {
-    this.resultChange.next('loose');
+    this.resultChange.next('perso');
   }
 }

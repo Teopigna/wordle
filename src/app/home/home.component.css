@@ -153,3 +153,34 @@
 .icon-container-dark {
   border-bottom: 1px var(--first-color) solid;
 }
+
+.board-row {
+  display: grid;
+  width: 30%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 100%;
+}
+
+.unit-container {
+  border-radius: 10%;
+  width: 2.5vw;
+  height: 2.5vw;
+  border: 2px solid black;
+  background-color: rgba(181, 181, 181, 0.279);
+}
+
+.unit-txt {
+  text-align: center;
+  height: 100%;
+  font-size: 2vw;
+  margin-bottom: 0px;
+  color: black;
+}
+
+.correct {
+  background-color: #77ed79;
+}
+
+.contained {
+  background-color: #e9ed77;
+}

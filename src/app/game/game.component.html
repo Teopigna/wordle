@@ -1,12 +1,9 @@
 <div class="result-container" *ngIf="result">
     <div class="result-panel" [ngClass]="mode === 'light' ? 'panel-light-mode' : 'panel-dark-mode'">
-        <h1 class="result-title">You {{result}}</h1>
+        <h1 class="result-title">Hai {{result}}</h1>
+        <h4 *ngIf="result ==='perso'">La parola era: {{correctWord}}</h4>
         <h5>Statistiche </h5>
-        <p>statistiche statistiche statistiche statistiche statistiche
-            statistiche statistiche statistiche statistiche statistiche
-            statistiche statistiche statistiche statistiche statistiche
-            statistiche statistiche statistiche statistiche statistiche
-        </p>
+        <app-stats></app-stats>
         <div class="button-container">
             <a 
                 class="btn btn-default btn-large" 

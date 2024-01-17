@@ -26,5 +26,9 @@ export class ThemeService {
     }
   }
 
+  getMode() {
+    return this.mode;
+  }
+
 
 }

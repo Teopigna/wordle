@@ -9,6 +9,7 @@ import { GameManagerService } from './services/game-manager.service';
 import { WordGeneratorService } from './services/word-generator.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ThemeService } from './services/theme-service.service';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ThemeService } from './services/theme-service.service';
     AppRoutingModule,
     HomeComponent,
     GameComponent,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule
   ],
   providers: [
     GameManagerService, WordGeneratorService, ThemeService

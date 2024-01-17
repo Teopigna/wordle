@@ -38,10 +38,12 @@
 /* KEYBOARD STYLE */
 .simple-keyboard {
   width: 30vw;
+  /* height: 30vh; */
   margin: auto;
   margin-top: 5%;
 
   font-family: 'Inter Tight', sans-serif;
+  font-size: 2vw;
 }
 
 .simple-keyboard.hg-theme-default.myLightTheme {
@@ -58,9 +60,17 @@
   border-radius: 10px;
 }
 
-.simple-keyboard.hg-layout-default .hg-button.hg-red {
-  background: red !important;
-  color: white;
+::ng-deep .hg-theme-default  .hg-button.hg-correct {
+  background: #77ed79 ;
+  color: var(--second-color);
+}
+::ng-deep .hg-theme-default  .hg-button.hg-contained {
+  background: #e9ed77 ;
+  color: var(--second-color);
+}
+::ng-deep .hg-theme-default  .hg-button.hg-normal {
+  background: #a9a9a9 ;
+  color: var(--second-color);
 }
 
 .keyboard-container {

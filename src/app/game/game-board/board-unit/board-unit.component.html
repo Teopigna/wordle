@@ -1,3 +1,3 @@
-<div class="unit-container">
+<div class="unit-container" [ngClass]="mode === 'light' ? 'unit-light-mode' : 'unit-dark-mode'">
     <h1 class="unit-text" [ngClass]="type">{{inputLetter}}</h1>
 </div>

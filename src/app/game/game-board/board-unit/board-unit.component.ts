@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, type OnInit } from '@angular/core';
 import { GameManagerService } from 'src/app/services/game-manager.service';
+import { ThemeService } from 'src/app/services/theme-service.service';
 
 @Component({
   selector: 'app-board-unit',
@@ -13,17 +14,23 @@ import { GameManagerService } from 'src/app/services/game-manager.service';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BoardUnitComponent implements OnInit {
-  @Input() mode: string = 'light';
   @Input() correctWord: string = '';
   @Input() rowIndex?: number;
   @Input() index?: number;
 
-  type: string = 'normal' // or right / or contained
+  type: string = 'normal' // or correct / or contained
   inputLetter:string = '';
   currentRow:number = 0;
   correctLetter?: string;
+  mode: string = 'light';
 
-  constructor(private gameManagerService: GameManagerService, private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    private gameManagerService: GameManagerService, 
+    private changeDetector: ChangeDetectorRef, 
+    private themeService: ThemeService
+  ) {
+
+    }
 
 
   ngOnInit(): void {
@@ -54,13 +61,20 @@ export class BoardUnitComponent implements OnInit {
       if(this.currentRow === this.rowIndex) {
         if( currentGuess === this.correctWord.split('')[this.index!]) {
           this.type = 'correct';
+          this.gameManagerService.sendCorrectLetter(this.inputLetter);
         } else if(this.correctWord.split('').includes(currentGuess)) {
           this.type = 'contained'
+          this.gameManagerService.sendContainedLetter(this.inputLetter);
         } else {
-          // console.info('normal');
+          this.gameManagerService.sendNormalLetter(this.inputLetter);
         }
       }
       
+      this.changeDetector.detectChanges();
+    })
+
+    this.themeService.modeChange.subscribe(value => {
+      this.mode = value;
       this.changeDetector.detectChanges();
     })
   }
