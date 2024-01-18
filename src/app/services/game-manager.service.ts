@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, delay } from 'rxjs';
 import { WordGeneratorService } from './word-generator.service';
+import { StatsService } from './stats-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,22 @@ export class GameManagerService {
   wordSet: any;
   wordGuess: any;
 
+  handlerTimeout_1: any;
+  handlerTimeout_2: any;
+
   userInputChange: Subject<string> = new Subject<string>();
   guessSent: Subject<string> = new Subject<string>();
   rowChange: Subject<number> = new Subject<number>();
   resultChange: Subject<string> = new Subject<string>();
+  alertChange: Subject<string> = new Subject<string>();
+  restartChange: Subject<boolean> = new Subject<boolean>();
+  shakeChange: Subject<string> = new Subject<string>();
   // Subjects for keyboard coloring used letters
   correctLetter: Subject<string> = new Subject<string>();
   containedLetter: Subject<string> = new Subject<string>();
   normalLetter: Subject<string> = new Subject<string>();
 
-  constructor(private wordGeneratorService: WordGeneratorService)  {
+  constructor(private wordGeneratorService: WordGeneratorService, private statsService: StatsService)  {
     this.userInputChange.subscribe((value) => {
         this.userInput = value;
     });
@@ -62,22 +69,31 @@ export class GameManagerService {
   }
 
   sendGuess(guess:string) {
+    this.shakeChange.next('');
     if(guess.length<5) {
-      console.info('Word is too short')
+      this.shakeChange.next('shake');
+      this.alertChange.next('La parola è troppo corta');
+      clearTimeout(this.handlerTimeout_1);
+      this.handlerTimeout_1 = setTimeout(() => {
+        this.resetAlert();
+      }, 1500);
       return;
     }
     if(!this.wordSet.includes(guess.toLowerCase())) {
-      console.info('Word is not recognized');
+      this.shakeChange.next('shake');
+      this.alertChange.next('La parola non è valida');
+      clearTimeout(this.handlerTimeout_2);
+      this.handlerTimeout_2 = setTimeout(() => {
+        this.resetAlert();
+      }, 1500);
       return;
     }
     if(guess.toUpperCase() === this.correctWord) {
-      this.currentRow = -1;
       this.rowChange.next(this.currentRow);
       this.winGame();
       
     }
     if(guess.toUpperCase() != this.correctWord && this.currentRow === 5) {
-      this.currentRow = -1;
       this.rowChange.next(this.currentRow);
       this.looseGame();
     }
@@ -85,26 +101,34 @@ export class GameManagerService {
     this.increaseCurrentRow();
   }
 
+  
+
   sendCorrectLetter(letter: string) {
-    console.info('correct: '+letter);
     this.correctLetter.next(letter);
   }
 
   sendContainedLetter(letter: string) {
-    console.info('contained: '+letter);
     this.containedLetter.next(letter);
   }
 
   sendNormalLetter(letter: string) {
-    console.info('normal: '+letter);
     this.normalLetter.next(letter);
   }
 
   winGame() {
+    this.statsService.addResult('win', this.currentRow);
+    this.currentRow = -1;
     this.resultChange.next('vinto');
   }
 
   looseGame() {
+    this.statsService.addResult('loss', this.currentRow);
+    this.currentRow = -1;
     this.resultChange.next('perso');
   }
+
+  resetAlert() {
+    this.alertChange.next('');
+  }
+
 }

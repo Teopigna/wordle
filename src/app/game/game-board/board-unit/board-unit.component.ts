@@ -23,6 +23,13 @@ export class BoardUnitComponent implements OnInit {
   currentRow:number = 0;
   correctLetter?: string;
   mode: string = 'light';
+  isInput: string = '';
+
+  restartChangeSub: any;
+  rowChangeSub: any;
+  inputChangeSub: any;
+  guessSentSub: any;
+  modeChangeSub: any;
 
   constructor(
     private gameManagerService: GameManagerService, 
@@ -34,28 +41,37 @@ export class BoardUnitComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.mode = this.themeService.getMode();
     //Get current row
     this.currentRow = this.gameManagerService.getCurrentRow();
 
-    this.gameManagerService.rowChange.subscribe(value => {
+    this.restartChangeSub = this.gameManagerService.restartChange.subscribe(res => {
+      this.inputLetter='';
+      this.type='normal';
+      console.info('reinitializing...')
+      //this.ngOnInit();
+    })
+
+    this.rowChangeSub = this.gameManagerService.rowChange.subscribe(value => {
       this.currentRow = value;
       this.changeDetector.detectChanges();
     })
 
-    this.gameManagerService.userInputChange.subscribe(value => {
+    this.inputChangeSub = this.gameManagerService.userInputChange.subscribe(value => {
       if(this.currentRow === this.rowIndex) {
-        
         if(value.length < this.index!+1) {
           this.inputLetter='';
+          this.isInput = ''
         }
         else {
           this.inputLetter = value.split('')[this.index!].toUpperCase();
+          this.isInput = 'is-input'
         }
       }
       this.changeDetector.detectChanges();
     })
 
-    this.gameManagerService.guessSent.subscribe(value => {
+    this.guessSentSub = this.gameManagerService.guessSent.subscribe(value => {
       var currentGuess = value.split('')[this.index!];
       
       if(this.currentRow === this.rowIndex) {
@@ -69,14 +85,22 @@ export class BoardUnitComponent implements OnInit {
           this.gameManagerService.sendNormalLetter(this.inputLetter);
         }
       }
-      
+        
       this.changeDetector.detectChanges();
     })
 
-    this.themeService.modeChange.subscribe(value => {
+    this.modeChangeSub = this.themeService.modeChange.subscribe(value => {
       this.mode = value;
       this.changeDetector.detectChanges();
     })
+  }
+
+  ngOnDestroy() {
+    this.guessSentSub.unsubscribe();
+    this.rowChangeSub.unsubscribe();
+    this.modeChangeSub.unsubscribe();
+    this.inputChangeSub.unsubscribe();
+    this.restartChangeSub.unsubscribe();
   }
 
 }

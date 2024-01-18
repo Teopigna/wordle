@@ -21,8 +21,13 @@
     </div>
 </div>
 
+<div class="alert-container" *ngIf="alertMessage !== ''">
+    <h4 class="alert-txt">{{alertMessage}}</h4>
+</div>
+
 <div class="main-container" [ngClass]="mode === 'light' ? ['light-mode', 'light-container'] : ['dark-mode', 'dark-container']">
     <app-game-board *ngIf="correctWord" [correctWord]="correctWord"></app-game-board>
+   
 </div>
 <div  class="keyboard-container" [ngClass]="mode === 'light' ? 'light-mode' : 'dark-mode'" >
     <div class="simple-keyboard"></div>

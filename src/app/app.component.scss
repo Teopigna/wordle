@@ -10,5 +10,110 @@
     width: 100vw;
     flex-direction: row-reverse;
     position:absolute;
-    z-index: 1;
+    z-index: 2;
   }
+
+/* STATS PANEL */
+.stats-container {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: #4d566958;
+  z-index: 1;
+
+  display: flex;
+  
+}
+
+.stats-panel {
+  width: 35%;
+  height: 50vh;
+  margin: auto;
+  text-align: center;
+  /* background-color: var(--first-color); */
+  /* border: 1px var(--second-color) solid; */
+  border-radius: 10px;
+  /* box-shadow: 10px 10px 1px var(--second-color) ; */
+  animation-name: move-in;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+}
+
+.stats-value {
+  margin: auto;
+  align-self: center;
+}
+
+.panel-light-mode {
+  border: 1px var(--second-color) solid;
+  background-color: var(--first-color);
+  color: var(--second-color);
+}
+
+.panel-dark-mode {
+  border: 1px var(--first-color) solid;
+  background-color: var(--second-color);
+  color: var(--first-color);
+}
+
+.img-x {
+  cursor: pointer;
+  width: 1.5vw;
+  margin-top: 2%;
+  margin-right: 3%;
+  margin-bottom: 1%;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.icon-container-light {
+  border-bottom: 1px var(--second-color) solid;
+}
+
+.icon-container-dark {
+  border-bottom: 1px var(--first-color) solid;
+}
+
+@keyframes move-in {
+  0%   {transform:translate(0px, 60px);}
+  25%   {transform:translate(0px, 45px);}
+  50%  {transform:translate(0px, 30px);}
+  75%   {transform:translate(0px, 15px);}
+  100% {transform:translate(0px, 0px);}
+}
+
+/* RESPONSIVE PART */
+@media only screen and (max-width: 768px) { 
+  .img-x {
+    cursor: pointer;
+    width: 5vw;
+    margin-top: 2%;
+    margin-right: 3%;
+    margin-bottom: 1%;
+  }
+  .img-moon {
+    width: 10vw;
+    margin-right: 2vw;
+    margin-top: 2vh;
+    cursor: pointer;
+  }
+
+  /* STATS PANEL */
+  .stats-panel {
+    width: 90%;
+    height: 50vh;
+    margin: auto;
+    text-align: center;
+    /* background-color: var(--first-color); */
+    /* border: 1px var(--second-color) solid; */
+    border-radius: 10px;
+    /* box-shadow: 10px 10px 1px var(--second-color) ; */
+  }
+
+  .stats-value {
+    margin: auto;
+    align-self: center;
+  }
+}

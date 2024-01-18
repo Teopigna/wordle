@@ -1,8 +1,31 @@
-<div>
-    <h2>STATS</h2>
+<div style="justify-content: center;">
     <div style="display: block">
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [chartType]="barChartType">
-        </canvas>
+        <div class="stats-container">
+            <div class="stat-unit">
+                <p class="stat-header">Partite giocate</p>
+                <p class="stat-value">{{stats!.gamesPlayed}}</p>
+            </div>
+            <div class="stat-unit">
+                <p class="stat-header">Vinte</p>
+                <p class="stat-value">{{ratio}}%</p>
+            </div>
+            <div class="stat-unit">
+                <p class="stat-header">Serie Attuale</p>
+                <p class="stat-value">{{stats!.currentStreak}}</p>
+            </div>
+            
+        </div>
+        <h6>Distribuzione numero di vittorie per numero di tentativi</h6>
+        <div class="canvas-container">
+            <canvas 
+                baseChart 
+                [datasets]="barChartData" 
+                [labels]="barChartLabels" 
+                [options]="barChartOptions"
+                [legend]="barChartLegend" 
+                [type]="'bar'" 
+                class="chart">
+            </canvas>
+        </div>
     </div>
 </div>

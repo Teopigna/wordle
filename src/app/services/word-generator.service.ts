@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class WordGeneratorService {
-  urlCorrect = 'https://random-word-api.herokuapp.com/word?length=5';
+  urlCorrect = 'https://random-word-api.herokuapp.com/word?length=5&lang=en';
   urlSet = 'https://random-word-api.herokuapp.com/word?number=10000&length=5';
 
   constructor(private http: HttpClient) {

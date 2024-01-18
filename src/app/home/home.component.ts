@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { GameComponent } from '../game/game.component';
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme-service.service';
+import { StatsService } from '../services/stats-service.service';
 
 
 @Component({
@@ -25,14 +26,14 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private statsService: StatsService
   ) {}
 
   ngOnInit(): void {
     this.mode = this.themeService.getMode();
     this.themeService.modeChange.subscribe(value => {
       this.mode = value;
-      console.info(this.mode)
       this.changeDetector.detectChanges();
     }) 
   }
@@ -52,9 +53,11 @@ export class HomeComponent implements OnInit {
 
   openRules() {
     this.rules = true;
+    this.statsService.statsLocked.next(true);
   }
 
   closeRules() {
     this.rules = false;
+    this.statsService.statsLocked.next(false);
   }
 }

@@ -7,6 +7,24 @@
     <img 
         [src] = "mode === 'light' ? './assets/images/stats-light.svg' : './assets/images/stats-dark.svg'" 
         class="img-moon"
+        (click)="toggleStats()"
     />
 </div>
+
+<div class="stats-container" *ngIf="stats">
+    <div class="stats-panel" [ngClass]="mode === 'light' ? 'panel-light-mode' : 'panel-dark-mode'">
+        <div class="icon-container" [ngClass]="mode === 'light' ? 'icon-container-light' : 'icon-container-dark'">
+            <img 
+                [src] = "mode === 'light' ? './assets/images/cross-x-light.svg' : './assets/images/cross-x-dark.svg'" 
+                class="img-x"
+                (click)="closeStats()"
+            />
+        </div>
+        <div class="stats-value">
+            <h3>Statistiche </h3>
+            <app-stats></app-stats>
+        </div>
+    </div>
+</div>
+
 <router-outlet></router-outlet>

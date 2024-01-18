@@ -12,7 +12,7 @@ import { GameManagerService } from 'src/app/services/game-manager.service';
   ],
   templateUrl: './board-row.component.html',
   styleUrls: ['./board-row.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BoardRowComponent implements OnInit {
 
@@ -20,7 +20,9 @@ export class BoardRowComponent implements OnInit {
   @Input() correctWord: string = '';
   @Input() index?: number;
 
+  shake: string = '';
   userInput: string = '';
+  currentRow: any = 0;
 
   auxWord = '     '
   word = this.auxWord.split('');
@@ -29,10 +31,18 @@ export class BoardRowComponent implements OnInit {
 
   ngOnInit(): void { 
     this.gameManagerService.userInputChange.subscribe(value => {
-      
       this.userInput = value;
       for(var i = 0; i < value.length; i++) {
         this.word[i] = value.split('')[i]; 
+      }
+    })
+    this.gameManagerService.rowChange.subscribe(value => {
+      this.currentRow = value;
+    })
+    this.gameManagerService.shakeChange.subscribe(value => {
+      if(this.index === this.currentRow) {
+        this.shake = value;
+        console.info(' SHAKE?: '+ this.shake);
       }
     })
   }

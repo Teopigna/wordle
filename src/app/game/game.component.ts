@@ -7,6 +7,7 @@ import Keyboard from '/Users/matteo/Desktop/web-dev/wordle/node_modules/simple-k
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme-service.service';
 import { StatsComponent } from '../stats/stats.component';
+import { StatsService } from '../services/stats-service.service';
 
 @Component({
   selector: 'app-game',
@@ -30,13 +31,15 @@ export class GameComponent implements OnInit {
 
   // value?: string;
   keyboard?: Keyboard;
+  alertMessage: string = '';
 
   constructor(
     private wordGeneratorService: WordGeneratorService,
     private gameManagerService: GameManagerService,
     private changeDetector: ChangeDetectorRef,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private statsService: StatsService
     ) {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -62,6 +65,8 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    this.mode = this.themeService.getMode();
     this.wordGeneratorService.getRandomWord().subscribe((res) => {
       this.correctWord = res[0].toUpperCase();
       console.info('correctWord: '+this.correctWord)
@@ -79,6 +84,7 @@ export class GameComponent implements OnInit {
 
     this.gameManagerService.resultChange.subscribe(value => {
       this.result = value;
+      this.statsService.statsLocked.next(true);
     })
 
     this.gameManagerService.correctLetter.subscribe(value => {
@@ -87,13 +93,19 @@ export class GameComponent implements OnInit {
       this.changeDetector.detectChanges();
     })
     this.gameManagerService.containedLetter.subscribe(value => {
-      if(this.keyboard?.getButtonThemeClasses('value')[0] !== 'hg-correct') {
+      if(this.keyboard?.getButtonThemeClasses(value)[0] === 'hg-correct') {
+        return;
+      } else {
         this.keyboard?.addButtonTheme(value, 'hg-contained');
       }
       this.changeDetector.detectChanges();
     })
     this.gameManagerService.normalLetter.subscribe(value => {
       this.keyboard?.addButtonTheme(value, 'hg-normal');
+      this.changeDetector.detectChanges();
+    })
+    this.gameManagerService.alertChange.subscribe(value => {
+      this.alertMessage = value;
       this.changeDetector.detectChanges();
     })
 
@@ -180,7 +192,6 @@ export class GameComponent implements OnInit {
   }
 
   restartGame() {
-    this.gameManagerService.rowChange
     this.result = undefined;
     this.keyboard?.removeButtonTheme(
       'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M',
@@ -194,11 +205,21 @@ export class GameComponent implements OnInit {
       'Q W E R T Y {bksp} U I O P A S D F G H J K L Z X C V B N M',
       'hg-normal'
     );
+    this.statsService.statsLocked.next(false);
+    this.gameManagerService.restartChange.next(true);
     this.changeDetector.detectChanges();
-    this.ngOnInit();
+    this.gameManagerService.userInputChange.next('');
+    // Choose a new letter
+    this.wordGeneratorService.getRandomWord().subscribe((res) => {
+      this.correctWord = res[0].toUpperCase();
+      console.info('correctWord: '+this.correctWord)
+      this.changeDetector.detectChanges();
+      this.gameManagerService.setCorrectWord(this.correctWord);
+    })
   }
 
   exit() {
+    this.statsService.statsLocked.next(false);
     this.router.navigateByUrl('/home');
   }
 

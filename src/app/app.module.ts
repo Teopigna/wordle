@@ -10,6 +10,7 @@ import { WordGeneratorService } from './services/word-generator.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ThemeService } from './services/theme-service.service';
 import { NgChartsModule } from 'ng2-charts';
+import { StatsComponent } from './stats/stats.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { NgChartsModule } from 'ng2-charts';
     HomeComponent,
     GameComponent,
     HttpClientModule,
-    NgChartsModule
+    NgChartsModule,
+    StatsComponent
   ],
   providers: [
     GameManagerService, WordGeneratorService, ThemeService

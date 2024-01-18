@@ -1,38 +1,65 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, type OnInit } from '@angular/core';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, type OnInit } from '@angular/core';
+import { NgChartsModule } from 'ng2-charts';
+import { Stats, StatsService } from '../services/stats-service.service';
+import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-stats',
   standalone: true,
   imports: [
     CommonModule,
+    NgChartsModule
   ],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatsComponent implements OnInit {
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true
+
+  stats?: Stats;
+  ratio?: number;
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 0,
+      },
+    },
+    plugins: {
+      
+    },
   };
   public barChartLabels = [
-    "2006",
-    "2007",
-    "2008",
-    "2009",
-    "2010",
-    "2011",
-    "2012"
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
   ];
-  public barChartType = "bar";
-  public barChartLegend = true;
-  public barChartData = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: "Series A" },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: "Series B" }
-  ];
+  public barChartLegend = false;
 
-  ngOnInit(): void { }
+  public barChartData :any;
+
+  public chartColors = ['']  
+
+  constructor(private statsService: StatsService, private changeDetector: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void { 
+    this.stats = this.statsService.getStats();  
+    this.ratio = Math.round(this.stats.wins*100/this.stats.gamesPlayed);
+    this.statsService.statsChange.subscribe(value => {
+      this.stats = value;
+      this.ratio = Math.round(value.wins*100)/value.gamesPlayed;
+      this.changeDetector.detectChanges();
+    })
+    this.barChartData = [
+      { data: this.stats?.dist, backgroundColor: '#77ed79' }
+    ];
+  }
 
 }
