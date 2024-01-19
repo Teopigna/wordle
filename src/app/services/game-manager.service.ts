@@ -3,6 +3,7 @@ import { Subject, delay } from 'rxjs';
 import { WordGeneratorService } from './word-generator.service';
 import { StatsService } from './stats-service.service';
 
+// Service that manage most of game functionalities
 @Injectable({
   providedIn: 'root'
 })
@@ -17,13 +18,13 @@ export class GameManagerService {
   handlerTimeout_1: any;
   handlerTimeout_2: any;
 
+  // Subjects for dinamic changes in components
   userInputChange: Subject<string> = new Subject<string>();
   guessSent: Subject<string> = new Subject<string>();
   rowChange: Subject<number> = new Subject<number>();
   resultChange: Subject<string> = new Subject<string>();
   alertChange: Subject<string> = new Subject<string>();
   restartChange: Subject<boolean> = new Subject<boolean>();
-  shakeChange: Subject<string> = new Subject<string>();
   // Subjects for keyboard coloring used letters
   correctLetter: Subject<string> = new Subject<string>();
   containedLetter: Subject<string> = new Subject<string>();
@@ -36,9 +37,6 @@ export class GameManagerService {
     this.guessSent.subscribe((value) => {
       this.wordGuess = value;
     })
-    // this.wordGeneratorService.getRandomWord().subscribe((res) => {
-    //   this.correctWord = res[0]
-    // })
     this.wordGeneratorService.getWordSet().subscribe((res) => {
       this.wordSet = res;
     })
@@ -58,10 +56,8 @@ export class GameManagerService {
       this.rowChange.next(this.currentRow);
       if(this.currentRow >= 6) {
         return;
-      }
-      
-    }
-    
+      } 
+    } 
   }
 
   getCurrentRow(){
@@ -69,9 +65,7 @@ export class GameManagerService {
   }
 
   sendGuess(guess:string) {
-    this.shakeChange.next('');
     if(guess.length<5) {
-      this.shakeChange.next('shake');
       this.alertChange.next('La parola è troppo corta');
       clearTimeout(this.handlerTimeout_1);
       this.handlerTimeout_1 = setTimeout(() => {
@@ -80,7 +74,6 @@ export class GameManagerService {
       return;
     }
     if(!this.wordSet.includes(guess.toLowerCase())) {
-      this.shakeChange.next('shake');
       this.alertChange.next('La parola non è valida');
       clearTimeout(this.handlerTimeout_2);
       this.handlerTimeout_2 = setTimeout(() => {
@@ -100,9 +93,7 @@ export class GameManagerService {
     this.guessSent.next(guess.toUpperCase());
     this.increaseCurrentRow();
   }
-
   
-
   sendCorrectLetter(letter: string) {
     this.correctLetter.next(letter);
   }

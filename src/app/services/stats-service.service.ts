@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+// Stat object interface
 export interface Stats {
   gamesPlayed: number;
   wins: number;
@@ -9,7 +10,7 @@ export interface Stats {
   distribution: number[];
   dist: number[];
 }
-
+// Service that manages collecting and storing stats
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +37,7 @@ export class StatsService {
   statsLocked: Subject<boolean> = new Subject<boolean>();
 
   constructor() { 
+    // Check and initialize (if needed) local storage
     if(!localStorage.getItem('games-played')) {
       localStorage.setItem('games-played', '0');
     }

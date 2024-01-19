@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   wordSet: any;
   result?: string;
 
-  // value?: string;
+
   keyboard?: Keyboard;
   alertMessage: string = '';
 
@@ -41,10 +41,10 @@ export class GameComponent implements OnInit {
     private themeService: ThemeService,
     private statsService: StatsService
     ) {
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngAfterViewInit():void {
+    // INITIALIZE GRAPHIC KEYBOARD
     this.keyboard = new Keyboard({
       onChange: input => this.onChange(input),
       onKeyPress: button => this.onKeyPress(button),
@@ -65,33 +65,36 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    // Get dark/light mode
     this.mode = this.themeService.getMode();
+    // Get word to guess
     this.wordGeneratorService.getRandomWord().subscribe((res) => {
       this.correctWord = res[0].toUpperCase();
       console.info('correctWord: '+this.correctWord)
       this.changeDetector.detectChanges();
       this.gameManagerService.setCorrectWord(this.correctWord);
     })
-
+    // Get set of valid words
     this.wordGeneratorService.getWordSet().subscribe((res) => {
       this.wordSet = res;
     })
-
+    // Subscribe to row changes
     this.gameManagerService.rowChange.subscribe(value => {
       this.userInput = '';
     })
-
+    // Subscribe to result (win/lose) change 
     this.gameManagerService.resultChange.subscribe(value => {
       this.result = value;
+      // Lock stats button if result is being shown
       this.statsService.statsLocked.next(true);
     })
-
+    // Subscribe to changes of correct letters to change graphic keyboard look
     this.gameManagerService.correctLetter.subscribe(value => {
       this.keyboard?.removeButtonTheme(value, 'hg-contained');
       this.keyboard?.addButtonTheme(value, 'hg-correct');
       this.changeDetector.detectChanges();
     })
+    // Subscribe to changes of contained letters to change graphic keyboard look
     this.gameManagerService.containedLetter.subscribe(value => {
       if(this.keyboard?.getButtonThemeClasses(value)[0] === 'hg-correct') {
         return;
@@ -100,32 +103,30 @@ export class GameComponent implements OnInit {
       }
       this.changeDetector.detectChanges();
     })
+    // Subscribe to changes of normal letters to change graphic keyboard look
     this.gameManagerService.normalLetter.subscribe(value => {
       this.keyboard?.addButtonTheme(value, 'hg-normal');
       this.changeDetector.detectChanges();
     })
+    // Subscribe to alert signal to generate alerts
     this.gameManagerService.alertChange.subscribe(value => {
       this.alertMessage = value;
       this.changeDetector.detectChanges();
     })
-
+    // Subscribe to mode changes
     this.themeService.modeChange.subscribe(value => {
       this.mode = value;
-
       this.keyboard!.dispatch(instance => {
         instance.setOptions({
           theme: this.mode === 'light' ?  "hg-theme-default hg-layout-default myLightTheme" : "hg-theme-default hg-layout-default myDarkTheme",
         });
       });
-      // TODO
-      // this.keyboard?.addButtonTheme('L F D R H', 'hg-contained')
       this.changeDetector.detectChanges();
     })
 
   }
 
   // DISPLAY KEYBOARD MANAGEMENT
-
   onChange = (input: string) => {
     if(input.length > 1) {
       if(input[input.length-1].length > 0) {
@@ -159,12 +160,7 @@ export class GameComponent implements OnInit {
     }
   };
 
-  // onInputChange = (event: any) => {
-  //   this.keyboard.setInput(event.target.value);
-  // };
-
   // USER INPUT MANAGEMENT 
-
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     // Funziona ma deprecato
@@ -191,6 +187,7 @@ export class GameComponent implements OnInit {
     }
   }
 
+  // Manage the game restarting routine
   restartGame() {
     this.result = undefined;
     this.keyboard?.removeButtonTheme(
@@ -217,7 +214,7 @@ export class GameComponent implements OnInit {
       this.gameManagerService.setCorrectWord(this.correctWord);
     })
   }
-
+  // Manage the game exit routine
   exit() {
     this.statsService.statsLocked.next(false);
     this.router.navigateByUrl('/home');

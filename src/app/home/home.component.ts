@@ -31,7 +31,9 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Get theme mode
     this.mode = this.themeService.getMode();
+    // Subscribe to theme mode changes
     this.themeService.modeChange.subscribe(value => {
       this.mode = value;
       this.changeDetector.detectChanges();
@@ -41,7 +43,7 @@ export class HomeComponent implements OnInit {
   startGame() {
     this.router.navigateByUrl('/game');
   }
-
+  // Toggle theme mode
   toggleMode() {
     if(this.mode === 'light') {
       this.mode = 'dark';

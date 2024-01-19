@@ -41,22 +41,21 @@ export class BoardUnitComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // Get theme
     this.mode = this.themeService.getMode();
     //Get current row
     this.currentRow = this.gameManagerService.getCurrentRow();
-
+    // Subscribe to game restarting routine -> reinitialize
     this.restartChangeSub = this.gameManagerService.restartChange.subscribe(res => {
       this.inputLetter='';
       this.type='normal';
-      console.info('reinitializing...')
-      //this.ngOnInit();
     })
-
+    // Subscribe to row changes
     this.rowChangeSub = this.gameManagerService.rowChange.subscribe(value => {
       this.currentRow = value;
       this.changeDetector.detectChanges();
     })
-
+    // Subscribe to input changes
     this.inputChangeSub = this.gameManagerService.userInputChange.subscribe(value => {
       if(this.currentRow === this.rowIndex) {
         if(value.length < this.index!+1) {
@@ -70,7 +69,7 @@ export class BoardUnitComponent implements OnInit {
       }
       this.changeDetector.detectChanges();
     })
-
+    // Subscribe to guess sent signal
     this.guessSentSub = this.gameManagerService.guessSent.subscribe(value => {
       var currentGuess = value.split('')[this.index!];
       
@@ -88,13 +87,13 @@ export class BoardUnitComponent implements OnInit {
         
       this.changeDetector.detectChanges();
     })
-
+    // Subscribe to theme mode changes
     this.modeChangeSub = this.themeService.modeChange.subscribe(value => {
       this.mode = value;
       this.changeDetector.detectChanges();
     })
   }
-
+  // Clean component before reinitializing
   ngOnDestroy() {
     this.guessSentSub.unsubscribe();
     this.rowChangeSub.unsubscribe();

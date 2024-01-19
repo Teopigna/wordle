@@ -11,11 +11,11 @@ export class WordGeneratorService {
   constructor(private http: HttpClient) {
    
   }
-
+  // Get a random 5-letter english word
   getRandomWord() {
     return this.http.get<any>(this.urlCorrect);
   }
-
+  // Get a set of 5-letters words
   getWordSet() {
     return this.http.get<any>(this.urlSet);
   }

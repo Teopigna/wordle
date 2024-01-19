@@ -30,21 +30,18 @@ export class BoardRowComponent implements OnInit {
   constructor(private gameManagerService: GameManagerService) {}
 
   ngOnInit(): void { 
+    // Subscribe to changes of user input
     this.gameManagerService.userInputChange.subscribe(value => {
       this.userInput = value;
       for(var i = 0; i < value.length; i++) {
         this.word[i] = value.split('')[i]; 
       }
     })
+    // Subscribe to changes of row
     this.gameManagerService.rowChange.subscribe(value => {
       this.currentRow = value;
     })
-    this.gameManagerService.shakeChange.subscribe(value => {
-      if(this.index === this.currentRow) {
-        this.shake = value;
-        console.info(' SHAKE?: '+ this.shake);
-      }
-    })
+    
   }
 
 }

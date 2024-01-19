@@ -16,7 +16,9 @@ import { GameManagerService } from 'src/app/services/game-manager.service';
 })
 export class GameBoardComponent implements OnInit {
 
+  // Get the theme mode from his parent component
   @Input() mode: string = 'light';
+  // Get the correct word from his parent component
   @Input() correctWord: string = '';
 
   userInput: string = '';
@@ -24,6 +26,7 @@ export class GameBoardComponent implements OnInit {
   constructor(private gameManagerService: GameManagerService) {}
 
   ngOnInit(): void {
+    // Update user input
     this.gameManagerService.userInputChange.subscribe(value => {
       this.userInput = value;
     })

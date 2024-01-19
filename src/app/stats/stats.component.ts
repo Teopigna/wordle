@@ -23,16 +23,29 @@ export class StatsComponent implements OnInit {
   public barChartOptions: ChartConfiguration['options'] = {
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-      x: {},
+      x: {
+        // title: {
+        //   color: 'black',
+        //   display: true,
+        //   text: 'Tentativi'
+        // }
+      },
       y: {
-        min: 0,
+        ticks: {
+          stepSize: 1
+        },
+        // title: {
+        //   color: 'black',
+        //   display: true,
+        //   text: 'Vittorie'
+        // }
       },
     },
     plugins: {
       
     },
   };
-  public barChartLabels = [
+  public barChartLabels = [ 
     "1",
     "2",
     "3",
@@ -58,7 +71,7 @@ export class StatsComponent implements OnInit {
       this.changeDetector.detectChanges();
     })
     this.barChartData = [
-      { data: this.stats?.dist, backgroundColor: '#77ed79' }
+      { data: this.stats?.dist, backgroundColor: '#77ed79', labels: 'Vittorie'}
     ];
   }
 
